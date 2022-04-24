@@ -1,0 +1,19 @@
+{
+  "name": "meta-gotchi",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "nx serve",
+    "build": "nx build",
+    "test": "nx test"
+  },
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "nx": "14.0.2",
+    "@nrwl/cli": "14.0.2",
+    "@nrwl/workspace": "14.0.2",
+    "typescript": "~4.6.2",
+    "prettier": "^2.5.1"
+  }
+}
