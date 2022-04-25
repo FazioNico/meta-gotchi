@@ -1,0 +1,24 @@
+<div class="container">
+  <canvas #canvas></canvas>
+</div>
+<div id="controls">
+  <ul id="levelsElement" *ngIf="state$|async as state">
+    <li *ngFor="let s of state| keyvalue">
+      <span>
+        <img src="./assets/icons/{{s.key}}.svg" alt="{{s.key}}" />
+      </span>
+      <div [ngStyle]="{'width': (s.value|toPercent|number: '1.2-2')+ '%'}"></div>
+    </li>
+  </ul>
+  <div id="actionsCtrl">
+    <button (click)="actions('feed')">
+      <img src="./assets/icons/foodLevel.svg" alt="feed" />
+    </button>
+    <button (click)="actions('play')">
+      <img src="./assets/icons/happyLevel.svg" alt="happy" />
+    </button>
+    <button (click)="actions('sleep')">
+      <img src="./assets/icons/sleepLevel.svg" alt="sleep" />
+    </button>
+  </div>
+</div>

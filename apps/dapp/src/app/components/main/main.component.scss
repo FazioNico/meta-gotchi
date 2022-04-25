@@ -1,0 +1,116 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  
+  svg {
+    width:100%;
+  }
+
+  .container {
+    width:100%;
+    height:100%;
+
+    canvas {
+      display:block;
+      width:100%;
+      height:100%;
+    }
+  }
+
+  #levelsElement {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    align-content: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    margin: 0rem;
+    height: 40px;
+
+    li {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+      min-width: 150px;
+      background-color: #fff;
+      height: 10px;
+      position: relative;
+      transform: translate(20px, 0px);
+      border-radius: 1rem;
+
+      div {
+        background-color: green;
+        height: 10px;
+        width: 100%;
+        border-radius: 1rem;
+      }
+
+      span {
+        position: absolute;
+        top: -10px;
+        background: #fff;
+        border-radius: 100%;
+        width: 34px;
+        height: 34px;
+        transform: translate(-30px, 0px);
+      }
+
+      img {
+        width: 34px;
+        height: 34px;
+        position: absolute;
+        transform: scale(0.5);
+      }
+    }
+  }
+
+  #actionsCtrl {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding-bottom: 1rem;
+    
+    button {
+      display: inline-block;
+      background: #fff;
+      border: none;
+      padding: 1rem 2rem;
+      margin: 0.5rem;
+      border-radius: 3rem;
+      text-transform: uppercase;
+      font-weight: 400;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+      transition: all 0.125s ease-in-out;
+      
+      img {
+        width: 34px;
+        height: 34px;
+      }
+
+      &:hover {
+        opacity: 0.9;
+        box-shadow: none;
+      }
+    }
+  }
+
+}
