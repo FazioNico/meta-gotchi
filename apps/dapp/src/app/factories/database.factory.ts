@@ -1,8 +1,8 @@
 export const databaseFactory = (provider: Storage) => {
-  console.log('[INFO]', 'databaseFactory'); 
+  console.log('[INFO] DatabaseFactory:'); 
   return {
     setItem<T>(key: string, value: T): Promise<boolean> {
-      console.log('[INFO]', 'databaseFactory.setItem', key, value); 
+      console.log('[INFO] databaseFactory.setItem:', key, value); 
       return new Promise((resolve, reject) => {
         try {
           const data = JSON.stringify(value);
@@ -14,11 +14,14 @@ export const databaseFactory = (provider: Storage) => {
       });
     },
     getItem<T>(key: string): Promise<T> {
-      console.log('[INFO]', 'databaseFactory.getItem', key); 
+      console.log('[INFO] databaseFactory.getItem:', key); 
       return new Promise((resolve, reject) => {
         const value = provider.getItem(key);
+        if (!value) {
+          return resolve(null as any);
+        }
         try {
-          const data = JSON.parse(value||'{}');          
+          const data = JSON.parse(value);          
           resolve(data);
         } catch (error) {
           reject(error);
@@ -26,8 +29,8 @@ export const databaseFactory = (provider: Storage) => {
       });
     },
     removeItem(key: string): Promise<boolean> {
-      console.log('[INFO]', 'databaseFactory.removeItem', key); 
-      return new Promise((resolve, reject) => {
+      console.log('[INFO] databaseFactory.removeItem:', key); 
+      return new Promise((resolve) => {
         provider.removeItem(key);
         resolve(true);
       });

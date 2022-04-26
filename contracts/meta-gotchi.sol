@@ -15,6 +15,7 @@ contract MetaGotchi is ERC721, Ownable {
         uint foodLevel;
         uint sleepLevel;
         uint happyLevel;
+        // bool isSleeping;
         string name;
     }
 
@@ -27,7 +28,7 @@ contract MetaGotchi is ERC721, Ownable {
     }
 
     function mint(string memory nftName) public payable {
-        require(balanceOf(msg.sender) <= 4, "Already create max characters.");
+        // require(balanceOf(msg.sender) <= 4, "Already create max characters.");
         uint price = 0.001 ether;
         require(msg.value >= price, "Not enough ETH.");
         Character memory thisCharacter = Character(
@@ -41,8 +42,10 @@ contract MetaGotchi is ERC721, Ownable {
         nextId++;
     }
 
-    function heal(uint _tokenId, type_character _type) public {
+    function heal(uint _tokenId, type_character _type) public payable {
         require(ownerOf(_tokenId) == msg.sender, "You cannot heal an other Character than yours.");
+        uint price = 1 wei;
+        require(msg.value >= price, "Not enough Wei.");
         Character storage thisCharacter = _characterDetails[_tokenId];
         // TODO: add Domain logic from Typescript
         if (_type == type_character.FOOD) {
@@ -50,6 +53,7 @@ contract MetaGotchi is ERC721, Ownable {
         } 
         else if (_type == type_character.SLEEP) {
             thisCharacter.sleepLevel = block.timestamp;
+            // thisCharacter.isSleeping = !thisCharacter.isSleeping;
         } 
         else if (_type == type_character.HAPPY) {
             thisCharacter.happyLevel = block.timestamp;

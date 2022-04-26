@@ -1,6 +1,5 @@
-import { inject, Inject, Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { PixiPet } from "./pixi-pet.class";
 
 type State = {
   foodLevel: number;
@@ -22,11 +21,14 @@ export class PixiPetService {
   public state$ = this._state$.asObservable();
 
   constructor(
-    @Inject('APP_STATE') private _defaultState: Promise<State>
+    @Inject('APP_STATE') private _defaultState: Promise<State>,
+    @Inject('APP_DATABASE') private _database: any,
   ) {
     this._defaultState.then(state => {
-      console.log('[INFO]', state);
-      this._state$.next(state);
+      console.log('[INFO] State:', state);
+      if (state) {
+        this._state$.next(state);
+      }
     });
   }
 
@@ -44,7 +46,7 @@ export class PixiPetService {
     requestAnimationFrame((t) => this.init(t));
   };
   
-  actions(type: string) {
+  async actions(type: string) {
     switch (true) {
       case type === 'feed':
         // only update if foodLevel is less than current timestamp
@@ -77,8 +79,10 @@ export class PixiPetService {
         }
         break;
     }
-    // save state to smart contract
-    localStorage.setItem('STATE', JSON.stringify(this._state$.value));
+    // TODO: save state to smart contract
+    // await this._contract['healNFT'](params, params);
+    // update state in database storage
+    await this._database.setItem('STATE', this._state$.value);
   }
 
   private _drain() {

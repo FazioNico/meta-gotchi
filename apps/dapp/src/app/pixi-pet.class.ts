@@ -9,7 +9,7 @@ export class PixiPet {
   private readonly _matEyeBlack = new MeshBasicMaterial({color: '#000'});
   private readonly _matWhite = new MeshBasicMaterial({color: '#fff'});
   private readonly _matPink = new MeshBasicMaterial({color: '#fc8df2'});
-  public get datas() {
+  public get datas(): Group {
     return this._mainGroup;
   }
 

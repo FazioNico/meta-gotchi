@@ -1,7 +1,13 @@
-<div>
+<div *ngIf="account;else authTemplate">
   <h1>
     Enter name of your MetaGotchi
   </h1>
   <input type="name" placeholder="Name" [(ngModel)]="name" />
   <button (click)="actions('create')">Create</button>
 </div>
+<ng-template #authTemplate>
+  <h1>
+    Please login with MetaMask
+  </h1>
+  <button (click)="actions('login')">Login</button>
+</ng-template>

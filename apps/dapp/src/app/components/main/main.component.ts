@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { FogExp2, Group, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { PixiPet } from '../../pixi-pet.class';
-import { PixiPetService } from '../../pixi-pet.service';
+import { PixiPetService } from '../../services/pixi-pet.service';
 
 @Component({
   selector: 'meta-gotchi-main',
@@ -11,21 +11,26 @@ import { PixiPetService } from '../../pixi-pet.service';
 })
 export class MainComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('canvas', {static: true, read: ElementRef}) private _canvas!: ElementRef<HTMLCanvasElement>;
-  public state$ = this._service.state$;
-  public backgroundColor = 0x9ac2fe; //this.getBackgroundColor(); 
+  @ViewChild('canvas', {static: true, read: ElementRef}) 
+  private readonly _canvas!: ElementRef<HTMLCanvasElement>;
+  private readonly _scene: Scene = new Scene();
+  private readonly _width = window.innerWidth;
+  private readonly _height = window.innerHeight;
+  private readonly _fov = 45; 
+  private readonly _aspectRatio = this._width / this._height; 
+  private readonly _near = 0.001;
+  private readonly _far = 100;
+  private readonly _mainGroup:Group = new Group();
   private _renderer!: WebGLRenderer;
-  private _scene!: Scene;
   private _camera!: PerspectiveCamera;
-  private _controls!: OrbitControls;
-  private _width = window.innerWidth;
-  private _height = window.innerHeight;
-  private _fov = 45; 
-  private _aspectRatio = this._width / this._height; 
-  private _near = 0.001;
-  private _far = 100;
-  private _mainGroup:Group = new Group();
-
+  private _orbitControls!: OrbitControls;
+  public isAutoRotateEnabled = false;
+  public readonly state$ = this._service.state$;
+  public readonly backgroundColor = 0x9ac2fe;
+  public get canvas(): HTMLCanvasElement {
+    return this._canvas?.nativeElement;
+  };
+  
   constructor(
     private readonly _service: PixiPetService
   ) {}
@@ -35,39 +40,53 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
+    if (!this.canvas) {
+      throw new Error("Canvas not found");
+    }
     this._setupScene();
     this._createPixiPet();
     this._render();
   }
 
   actions(type: string) {
-    this._service.actions(type);
+    switch (type) {
+      case 'toggle-auto-rotate':
+        this.isAutoRotateEnabled = !this.isAutoRotateEnabled;
+        break;
+      default:
+        this._service.actions(type);
+        break;
+    }
   }
 
   private _setupScene() {
-    // scene
-    this._scene = new Scene();
+    // scene configuration
     this._scene.fog = new FogExp2(0x9ac2fe, 0.054);
+    this._scene.add(this._mainGroup);
     // camera
     this._camera = new PerspectiveCamera(this._fov, this._aspectRatio, this._near, this._far);
+    this._camera.position.set(2.56, 2, 4.4);
+    this._camera.lookAt(0,0,0);
     this._scene.add( this._camera );  
     // renderer
-    if (!this._canvas) {
-      throw new Error("Canvas not found");
-    }
     this._renderer = new WebGLRenderer({
       antialias: true,
-      canvas: this._canvas.nativeElement
+      canvas: this.canvas
     });
     this._renderer.setSize(this._width, this._height);
     this._renderer.setPixelRatio(window.devicePixelRatio);
     this._renderer.setClearColor(this.backgroundColor);
     // controls
-    this._controls = new OrbitControls(this._camera, this._renderer.domElement);
-    this._camera.position.set(2.56, 2, 4.4);
-    // group
-    this._scene.add(this._mainGroup)
-    this._camera.lookAt(0,0,0)
+    this._orbitControls = new OrbitControls(this._camera, this._renderer.domElement);
+    this._orbitControls.maxDistance = 10;
+    this._orbitControls.minDistance = 2;
+    this._orbitControls.rotateSpeed = 0.5;
+    this._orbitControls.autoRotate = true;
+    this._orbitControls.autoRotateSpeed = 0.5;
+    this._orbitControls.minPolarAngle = 0;
+    this._orbitControls.maxPolarAngle = Math.PI;
+    this._orbitControls.minAzimuthAngle = -Math.PI;
+    this._orbitControls.maxAzimuthAngle = Math.PI;
   }
 
   private _createPixiPet() {
@@ -76,19 +95,11 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   private _render() {
-    // this._controls.update()
+    if (this.isAutoRotateEnabled) {
+      this._orbitControls.update();
+    }
     this._renderer.render(this._scene, this._camera);
     requestAnimationFrame(() => this._render());
   };
-
-  getBackgroundColor() {
-    //  use current hours to generate corresponding darker blue color
-    const hours = new Date('01.01.2022 09:00').getHours();
-    const blue = Math.floor(hours / 24 * 255);
-    const result = `rgb(0, 0, ${blue})`;
-    console.log(result);
-    return result;
-    
-  }
 
 }
