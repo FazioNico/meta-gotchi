@@ -1,5 +1,10 @@
 {
   "name": "meta-gotchi",
+  "description": "MetaGotchi Play to Earn Metaverse Game",
+  "author": {
+    "name": "Nicolas Fazio",
+    "url": "https://nicolasfazio.ch"
+  },
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -8,7 +13,7 @@
     "test": "nx test",
     "postinstall": "ngcc --properties es2015 browser module main"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "~13.3.0",
     "@angular/common": "~13.3.0",

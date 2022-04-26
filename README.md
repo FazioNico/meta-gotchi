@@ -1,15 +1,20 @@
-# Basic Sample Hardhat Project
+# MetaGotchi Play to Earn Metaverse Game
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This project demonstrates a basic implementation of developpement stack to build decentralized Metaverse Play To Earn (P2E) Game. This workspace comes with a `solidity` smartcontract and a `Angular` frontend dApp that integrate `Three.js` to render the game in the 3D Metaverse environment and interact with the smartcontract.
 
-Try running some of the following tasks:
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+## Developement
+<b>Browser</b>
+- You have to get MetaMask extension installed to provide web3 provider
+
+<b> Blockchain </b>
+- Start ethereum node using `npx hardhat node`
+- Open Ethereum Remix Plugin for Visual Studio Code
+- Compile and deploy `./meta-gotchi/contracts/meta-gotchi.sol` contract using Ethereum Remix Plugin interface
+- Connect MetaMask to the local Hardhat node
+- Import demo Ethereum Wallets address to MetaMask
+
+<b>dApp</b>
+- Install project dependencies using NodeJS and NPM with `npm install`
+- Run project in browser using `npm run start`
+- Open browser `localhost:4200` to see the dApp
